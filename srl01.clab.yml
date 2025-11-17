@@ -1,18 +1,17 @@
 name: srl01 # saved as /Users/al03040372/git/code0x9/network-study/srl01.clab.yml
 
 topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux
+      type: ixr-d2l
   nodes:
     srl1:
       kind: nokia_srlinux
-      type: ixr-d2l
-      image: ghcr.io/nokia/srlinux:latest
-
     srl2:
       kind: nokia_srlinux
-      type: ixr-d2l
-      image: ghcr.io/nokia/srlinux:latest
 
   links:
     # inter-switch link
-    - endpoints: [ srl1:e1-1, srl2:e1-1 ]
-    - endpoints: [ srl1:e1-2, srl2:e1-2 ]
+    - endpoints: [srl1:e1-1, srl2:e1-1]
+    - endpoints: [srl1:e1-2, srl2:e1-2]

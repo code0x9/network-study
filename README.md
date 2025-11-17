@@ -54,6 +54,16 @@ gnmic -a 172.20.20.2:57400 --skip-verify -u admin -p 'NokiaSrl1!' capabilities
 gnmic -a 172.20.20.2:57400 --skip-verify -u admin -p 'NokiaSrl1!' --encoding JSON_IETF get --path '/interface[name=ethernet-1/1]/subinterface[index=0]/ipv4/address'
 ```
 
+```shell
+brew install wireshark wireshark-app
+ln -s /Applications/Wireshark.app/Contents/MacOS/Wireshark /usr/local/bin/wireshark
+```
+
+```shell
+## check generated root password from `docker logs`
+ssh root@localhost -p 8022 'tcpdump -i eth0 -w - "not port 22"' | /Applications/Wireshark.app/Contents/MacOS/Wireshark -k -i -
+```
+
 ## ref
 
 - https://containerlab.dev/

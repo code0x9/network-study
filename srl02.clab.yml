@@ -1,0 +1,18 @@
+# topology documentation: http://containerlab.dev/lab-examples/two-srls/
+name: srl02
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux
+      type: ixr-d2l
+  nodes:
+    srl1:
+      kind: nokia_srlinux
+      startup-config: srl1.cfg
+    srl2:
+      kind: nokia_srlinux
+      startup-config: srl2.cfg
+
+  links:
+    - endpoints: ["srl1:e1-1", "srl2:e1-1"]
