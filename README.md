@@ -40,6 +40,20 @@ kubevirt: https://github.com/kubevirt/kubevirt
 - vscode extension
   - Dev Containers: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 
+## gNMI: <https://gnmic.openconfig.net>
+
+```shell
+brew install gnmic
+```
+
+```shell
+gnmic -a 172.20.20.2:57400 --skip-verify -u admin -p 'NokiaSrl1!' capabilities 
+```
+
+```shell
+gnmic -a 172.20.20.2:57400 --skip-verify -u admin -p 'NokiaSrl1!' --encoding JSON_IETF get --path '/interface[name=ethernet-1/1]/subinterface[index=0]/ipv4/address'
+```
+
 ## ref
 
 - https://containerlab.dev/

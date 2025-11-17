@@ -1,10 +1,10 @@
-package main
+package euler
 
 import (
-	"fmt"
+	"testing"
 )
 
-func main() {
+func TestEuler(t *testing.T) {
 	sum := 0
 	max := 260000
 	for i := 1; i <= max; i++ {
@@ -13,5 +13,5 @@ func main() {
 			sum += square
 		}
 	}
-	fmt.Printf("%v\n", sum)
+	t.Logf("%v\n", sum)
 }
