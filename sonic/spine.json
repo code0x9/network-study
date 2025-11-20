@@ -1,0 +1,31 @@
+{
+    "LOOPBACK_INTERFACE": {
+        "Loopback0|10.255.0.10/32": {}
+    },
+    "INTERFACE": {
+        "Ethernet8|10.10.1.1/24": {},
+        "Ethernet12|10.10.2.1/24": {}
+    },
+    "PORT": {
+        "Ethernet8": {
+            "lanes": "1",
+            "speed": "100000",
+            "index": "1",
+            "admin_status": "up"
+        },
+        "Ethernet12": {
+            "lanes": "2",
+            "speed": "100000",
+            "index": "2",
+            "admin_status": "up"
+        }
+    },
+    "FEATURE": {
+        "bgp": {
+            "state": "enabled"
+        },
+        "lldp": {
+            "state": "enabled"
+        }
+    }
+}

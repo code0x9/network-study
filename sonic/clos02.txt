@@ -1,0 +1,107 @@
+        config interface ip add Ethernet0 10.10.1.1/24
+        config interface startup Ethernet0
+        config interface ip add Ethernet4 10.10.2.1/24
+        config interface startup Ethernet4
+        config loopback add Loopback0
+        config interface ip add Loopback0 10.255.0.10/32
+        config interface startup Loopback0
+
+
+
+config interface ip add Ethernet8 10.10.2.1/24
+config interface startup Ethernet8
+
+
+
+| Link  | S1        | Leaf      | Subnet       |
+| ----- | --------- | --------- | ------------ |
+| S1–L1 | 10.10.1.1 | 10.10.1.2 | 10.10.1.0/24 |
+| S1–L2 | 10.10.2.1 | 10.10.2.2 | 10.10.2.0/24 |
+
+Loopbacks:
+
+S1 = 10.255.0.10/32
+L1 = 10.255.1.1/32
+L2 = 10.255.2.2/32
+
+
+
+ip addr add 10.10.1.1/24 dev eth1
+ip addr add 10.10.2.1/24 dev eth2
+ip addr add 10.255.0.10/32 dev lo
+
+ip link set eth1 up
+ip link set eth2 up
+
+
+docker exec -it bgp-spine-leaf-L1 bash
+
+ip addr add 10.10.1.2/24 dev eth1
+ip addr add 10.255.1.1/32 dev lo
+
+ip link set eth1 up
+
+
+docker exec -it bgp-spine-leaf-L2 bash
+
+ip addr add 10.10.2.2/24 dev eth1
+ip addr add 10.255.2.2/32 dev lo
+
+ip link set eth1 up
+
+
+service frr restart
+supervisorctl start bgpd
+
+## spine
+configure terminal
+ router bgp 65000
+  bgp router-id 10.255.0.10
+  no bgp ebgp-requires-policy
+
+  neighbor 10.10.1.2 remote-as 65001
+  neighbor 10.10.2.2 remote-as 65002
+
+  address-family ipv4 unicast
+   neighbor 10.10.1.2 activate
+   neighbor 10.10.2.2 activate
+   network 10.255.0.10/32
+  exit-address-family
+ exit
+end
+write
+
+
+## leaf 1
+configure terminal
+ router bgp 65001
+  bgp router-id 10.255.1.1
+  no bgp ebgp-requires-policy
+ 
+  neighbor 10.10.1.1 remote-as 65000
+
+  address-family ipv4 unicast
+   neighbor 10.10.1.1 activate
+   network 10.255.1.1/32
+   network 10.10.1.0/24
+  exit-address-family
+ exit
+end
+write
+
+## leaf 2
+configure terminal
+ router bgp 65002
+  bgp router-id 10.255.2.2
+  no bgp ebgp-requires-policy
+
+  neighbor 10.10.2.1 remote-as 65000
+
+  address-family ipv4 unicast
+   neighbor 10.10.2.1 activate
+   network 10.255.2.2/32
+   network 10.10.2.0/24
+  exit-address-family
+ exit
+end
+write

@@ -1,0 +1,52 @@
+# topology documentation: https://containerlab.dev/lab-examples/srl-sonic/
+name: clos02
+
+topology:
+  kinds:
+    sonic-vs:
+      image: docker-sonic-vs:latest
+
+    linux:
+      image: raesene/alpine-containertools
+      exec:
+        - apk add tcpdump
+
+  nodes:
+    spine:
+      kind: sonic-vs
+      mgmt-ipv4: 172.20.20.10
+      startup-config:
+      # exec:
+      #   - ip addr add 10.10.1.1/24 dev eth1
+      #   - ip addr add 10.10.2.1/24 dev eth2
+      #   - ip addr add 10.255.0.10/32 dev lo
+      #   - ip link set eth1 up
+      #   - ip link set eth2 up
+
+    leaf1:
+      kind: sonic-vs
+      mgmt-ipv4: 172.20.20.21
+      # exec:
+      #   - ip addr add 10.10.1.2/24 dev eth1
+      #   - ip addr add 10.255.1.1/32 dev lo
+      #   - ip link set eth1 up
+
+    leaf2:
+      kind: sonic-vs
+      mgmt-ipv4: 172.20.20.22
+      # exec:
+      #   - ip addr add 10.10.2.2/24 dev eth1
+      #   - ip addr add 10.255.2.2/32 dev lo
+      #   - ip link set eth1 up
+
+    client1:
+      kind: linux
+
+    client2:
+      kind: linux
+
+  links:
+    - endpoints: ["spine:eth1", "leaf1:eth1"]
+    - endpoints: ["spine:eth2", "leaf2:eth1"]
+    - endpoints: ["leaf1:eth2", "client1:eth1"]
+    - endpoints: ["leaf2:eth2", "client2:eth1"]

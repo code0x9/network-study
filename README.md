@@ -64,6 +64,12 @@ ln -s /Applications/Wireshark.app/Contents/MacOS/Wireshark /usr/local/bin/wiresh
 ssh root@localhost -p 8022 'tcpdump -i eth0 -w - "not port 22"' | /Applications/Wireshark.app/Contents/MacOS/Wireshark -k -i -
 ```
 
+## SONiC
+https://containerlab.dev/manual/kinds/sonic-vs/
+
+1. get sonic image: https://containerlab.dev/manual/kinds/sonic-vs/#getting-sonic-images
+2. load image: `docker load docker-sonic-vs.gz`
+
 ## ref
 
 - https://containerlab.dev/
